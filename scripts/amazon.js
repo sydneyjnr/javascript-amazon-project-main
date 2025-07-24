@@ -29,7 +29,7 @@
 //         stars: 5.0,
 //         count: 1211
 //     },
-//     priceCents: 2250 
+//     priceCents: 2250
 //     }, {
 //     image: 'images/products/round-airtight-food-storage-containers.jpg',
 //     name: 'Round Airtight Food Storage Containers - 5 Piece',
@@ -40,9 +40,9 @@
 //     priceCents: 2899
 //     }]
 
-let productHTML = '';
+let productHTML = "";
 products.forEach((product) => {
-    productHTML += `
+  productHTML += `
          <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -55,7 +55,7 @@ products.forEach((product) => {
 
           <div class="product-rating-container">
             <img class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars*10}.png">
+              src="images/ratings/rating-${product.rating.stars * 10}.png">
             <div class="product-rating-count link-primary">
               ${product.rating.count}
             </div>
@@ -87,14 +87,39 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${
+            product.id
+          }">
             Add to Cart
           </button>
         </div>    
     `;
-
-    
-})
+});
 console.log(productHTML);
 
-document.querySelector('.js-products-grid').innerHTML = productHTML;
+document.querySelector(".js-products-grid").innerHTML = productHTML;
+
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    const productId = button.dataset.productId;
+
+    let matchingItem;
+
+    cart.forEach((item) => {
+      if (productId === item.productId) {
+        matchingItem = item;
+      }
+    });
+
+    if (matchingItem) {
+      matchingItem.quantity += 1;
+    } else {
+      cart.push({
+        productId,
+        quantity: 1,
+      });
+    }
+
+    console.log(cart);
+  });
+});
